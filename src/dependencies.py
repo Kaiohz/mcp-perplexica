@@ -20,6 +20,8 @@ mcp = FastMCP(
     Available tools:
     - search: Perform a web search using Perplexica
     """,
+    host=settings.host,
+    port=settings.port
 )
 
 

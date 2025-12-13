@@ -1,5 +1,7 @@
 """Configuration - Pydantic Settings for application configuration."""
 
+from typing import Literal
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -9,6 +11,9 @@ class Settings(BaseSettings):
     Attributes:
         perplexica_url: Base URL for Perplexica API.
         perplexica_timeout: Request timeout in seconds.
+        transport: Transport type for MCP server (stdio, sse, streamable-http).
+        host: Host to bind the server to (for sse and streamable-http).
+        port: Port to bind the server to (for sse and streamable-http).
         default_chat_model_provider_id: Default provider ID for chat model.
         default_chat_model_key: Default key for chat model.
         default_embedding_model_provider_id: Default provider ID for embedding model.
@@ -28,6 +33,11 @@ class Settings(BaseSettings):
     # Perplexica API configuration
     perplexica_url: str = "http://localhost:3000"
     perplexica_timeout: float = 120.0
+
+    # MCP Server configuration
+    transport: Literal["stdio", "sse", "streamable-http"] = "stdio"
+    host: str = "127.0.0.1"
+    port: int = 8000
 
     # Default model configuration
     default_chat_model_provider_id: str = ""
