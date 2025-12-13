@@ -11,6 +11,7 @@ This server allows LLMs to perform web searches through Perplexica using the Mod
 - ⚡ Configurable optimization modes (speed, balanced, quality)
 - 🔧 Customizable model configuration
 - 📖 Source citations in responses
+- 🚀 Multiple transport modes (stdio, SSE, Streamable HTTP)
 
 ## Prerequisites
 
@@ -38,7 +39,15 @@ cp .env.example .env
 
 4. Edit `.env` with your configuration:
 ```bash
+# Perplexica API
 PERPLEXICA_URL=http://localhost:3000
+
+# Transport: stdio (default), sse, or streamable-http
+TRANSPORT=stdio
+HOST=127.0.0.1
+PORT=8000
+
+# Model configuration
 DEFAULT_CHAT_MODEL_PROVIDER_ID=your-provider-id
 DEFAULT_CHAT_MODEL_KEY=anthropic/claude-sonnet-4.5
 DEFAULT_EMBEDDING_MODEL_PROVIDER_ID=your-provider-id
@@ -46,6 +55,16 @@ DEFAULT_EMBEDDING_MODEL_KEY=openai/text-embedding-3-small
 ```
 
 ## Usage
+
+### Transport Modes
+
+The server supports three transport modes:
+
+| Transport | Description | Use Case |
+|-----------|-------------|----------|
+| `stdio` | Standard input/output | CLI tools, Claude Desktop |
+| `sse` | Server-Sent Events over HTTP | Web clients |
+| `streamable-http` | Streamable HTTP (recommended for production) | Production deployments |
 
 ### Running with Docker Compose
 
@@ -69,13 +88,19 @@ This starts:
 
 ### Running the MCP Server (without Docker)
 
+#### Stdio mode (default)
 ```bash
-uv run mcp-perplexica
+uv run python -m main
 ```
 
-Or directly:
+#### SSE mode
 ```bash
-uv run python -m src.main
+TRANSPORT=sse PORT=8000 uv run python -m main
+```
+
+#### Streamable HTTP mode
+```bash
+TRANSPORT=streamable-http PORT=8000 uv run python -m main
 ```
 
 ### Claude Desktop Configuration
@@ -87,9 +112,10 @@ Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/
   "mcpServers": {
     "perplexica": {
       "command": "uv",
-      "args": ["run", "--directory", "/path/to/mcp-perplexica", "mcp-perplexica"],
+      "args": ["run", "--directory", "/path/to/mcp-perplexica", "python", "-m", "main"],
       "env": {
         "PERPLEXICA_URL": "http://localhost:3000",
+        "TRANSPORT": "stdio",
         "DEFAULT_CHAT_MODEL_PROVIDER_ID": "your-provider-id",
         "DEFAULT_CHAT_MODEL_KEY": "anthropic/claude-sonnet-4.5",
         "DEFAULT_EMBEDDING_MODEL_PROVIDER_ID": "your-provider-id",
@@ -98,6 +124,18 @@ Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/
     }
   }
 }
+```
+
+### Claude Code Configuration
+
+For HTTP-based transports, you can add the server to Claude Code:
+
+```bash
+# Start the server with streamable-http transport
+TRANSPORT=streamable-http PORT=8000 uv run python -m main
+
+# Add to Claude Code
+claude mcp add --transport http perplexica http://localhost:8000/mcp
 ```
 
 ## Available Tools

@@ -7,7 +7,7 @@ services:
       - data:/home/perplexica/data
       - uploads:/home/perplexica/uploads
     env_file:
-      - .env.perplexica
+      - .env.docker.perplexica
     restart: unless-stopped
 
   mcp-perplexica:
@@ -17,9 +17,7 @@ services:
     depends_on:
       - perplexica
     env_file:
-      - .env
-    environment:
-      - PERPLEXICA_URL=http://perplexica:3000
+      - .env.docker
     restart: unless-stopped
 
 volumes:
