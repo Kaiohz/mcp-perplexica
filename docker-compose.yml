@@ -1,0 +1,29 @@
+services:
+  perplexica:
+    image: itzcrazykns1337/perplexica:latest
+    ports:
+      - '3000:3000'
+    volumes:
+      - data:/home/perplexica/data
+      - uploads:/home/perplexica/uploads
+    env_file:
+      - .env.perplexica
+    restart: unless-stopped
+
+  mcp-perplexica:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - perplexica
+    env_file:
+      - .env
+    environment:
+      - PERPLEXICA_URL=http://perplexica:3000
+    restart: unless-stopped
+
+volumes:
+  data:
+    name: 'perplexica-data'
+  uploads:
+    name: 'perplexica-uploads'
