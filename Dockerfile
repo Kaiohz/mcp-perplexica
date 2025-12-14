@@ -47,7 +47,5 @@ USER appuser
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import main" || exit 1
 
-EXPOSE 8002
-
 # Run MCP server
 CMD ["python", "-m", "main"]

@@ -3,6 +3,9 @@
 from config import Settings
 from dependencies import mcp
 
+# Import api module to register MCP tools via decorators
+import application.api  # noqa: F401
+
 settings = Settings()
 
 if __name__ == "__main__":
