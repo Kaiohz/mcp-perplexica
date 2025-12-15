@@ -90,17 +90,17 @@ This starts:
 
 #### Stdio mode (default)
 ```bash
-uv run python -m main
+uv run python src/main.py
 ```
 
 #### SSE mode
 ```bash
-TRANSPORT=sse PORT=8000 uv run python -m main
+TRANSPORT=sse PORT=8000 uv run python src/main.py
 ```
 
 #### Streamable HTTP mode
 ```bash
-TRANSPORT=streamable-http PORT=8000 uv run python -m main
+TRANSPORT=streamable-http PORT=8000 uv run python src/main.py
 ```
 
 ### Claude Desktop Configuration

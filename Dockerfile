@@ -37,10 +37,10 @@ COPY --from=builder --chown=appuser:appgroup /app/pyproject.toml /app/pyproject.
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PATH="/app/.venv/bin:$PATH"
-ENV PYTHONPATH="/app/src"
+ENV PYTHONPATH="/app"
 
 # Switch to non-root user
 USER appuser
 
 # Run MCP server
-CMD ["python", "-m", "main"]
+CMD ["python", "src/main.py"]
