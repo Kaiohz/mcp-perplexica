@@ -38,14 +38,9 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH="/app/src"
-ENV PERPLEXICA_URL=http://perplexica:3000
 
 # Switch to non-root user
 USER appuser
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import main" || exit 1
 
 # Run MCP server
 CMD ["python", "-m", "main"]
